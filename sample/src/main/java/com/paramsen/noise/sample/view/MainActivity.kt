@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         //AudioView
         disposable.add(src.observeOn(Schedulers.newThread())
                 .doOnNext { p0.next() }
-                .subscribe(audioView::onWindow, { e -> Log.e(TAG, e.message) }))
+                .subscribe(audioView::onWindow, { e -> e.message?.let { Log.e(TAG, it) } }))
         //FFTView
         disposable.add(src.observeOn(Schedulers.newThread())
                 .doOnNext { p1.next() }
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 .subscribe({ fft ->
                     fftHeatMapView.onFFT(fft)
                     fftBandView.onFFT(fft)
-                }, { e -> Log.e(TAG, e.message) }))
+                }, { e -> e.message?.let { Log.e(TAG, it) } }))
 
         tip.schedule()
     }
@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         info.onShow()
 
         return true
